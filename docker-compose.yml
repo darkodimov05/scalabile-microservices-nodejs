@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  cart-js:
+    build:
+      context: ./cart
+      dockerfile: Dockerfile
+    image: cart-image
+    container_name: cart-container
+    restart: always
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./cart:/home/node/app
+
+  catalogue-js:
+    build:
+      context: ./catalogue
+      dockerfile: Dockerfile
+    image: catalogue-image
+    container_name: catalogue-container
+    restart: always
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./catalogue:/home/node/app
+
+    
+  users-js:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    image: users-image
+    container_name: users-container
+    restart: always
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./users:/home/node/app
+
+
+  front-js:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    image: front-image
+    container_name: front-container
+    restart: always
+    ports:
+      - "8079:8079"
+    volumes:
+      - ./front-end:/home/node/app    
+    depends_on:
+      - cart-js
+      - catalogue-js
+      - users-js
